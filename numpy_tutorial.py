@@ -10,3 +10,5 @@ if __name__== "__main__":
     print(a[0,2])
     print(b)
     print(b[b>=101])                        #Se puede hacer comparaciones dentro de los arrays para filtrar mas rapido los datos
+
+    
