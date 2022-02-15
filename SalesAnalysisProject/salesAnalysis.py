@@ -1,7 +1,9 @@
-from unittest import result
-from cv2 import add
+from turtle import color
+from numpy import product
 import pandas as pd
 import matplotlib.pyplot as plt
+from itertools import combinations
+from collections import Counter
 
 
 #PRIMER PASO: JUNTAR TODO LOS CSV EN UNO SOLO PARA QUE NO TENGAS QUE REPETIR ESTE PROCESO EN CADA CORRIDA
@@ -77,7 +79,7 @@ plt.show() """
 
 #Question 2: What city had the highest number of sales?
 
-results = all_data.groupby('City').sum()
+""" results = all_data.groupby('City').sum()
 
 cities = [city for city, df in all_data.groupby('City')]
 
@@ -91,4 +93,74 @@ plt.ylabel('Sales in USD')
 
 plt.xlabel('City name')
 
-plt.show()
+plt.show() """
+
+#Question 3: What time should we display advertisements to maximize likelihood of customer's buying products?
+
+#SE CONVERTIRA ORDERED DATE EN DATETIME TYPE DEBIDO A QUE SE NECESITAN UTILIZAR METODOS DE ESTE TIPO PARA RESPONDER LA PREGUNTA
+
+""" all_data['Order Date'] = pd.to_datetime(all_data['Order Date'])
+
+all_data['Hour'] = all_data['Order Date'].dt.hour
+all_data['Minute'] = all_data['Order Date'].dt.minute
+all_data['Count'] = 1
+
+hours = [hour for hour, df in all_data.groupby('Hour')]
+
+plt.plot(hours, all_data.groupby(['Hour']).count())
+
+plt.xticks(hours)
+
+plt.grid()
+
+plt.show() """
+
+#Question 4: What products are most often sold together?
+
+""" df = all_data[all_data['Order ID'].duplicated(keep=False)]              #keep=False marca como duplicado todo, contando el dato original
+
+df['Grouped'] = df.groupby('Order ID')['Product'].transform(lambda x: ','.join(x))
+
+df = df[['Order ID', 'Grouped']].drop_duplicates()
+
+#print(df.head())
+
+count = Counter()
+
+for row in df['Grouped']:
+    row_list = row.split(',')
+    count.update(Counter(combinations(row_list,2)))
+
+for key, value in count.most_common(10):
+    print(key,value) """
+
+#Question 5: What product sold the most? Why do you think it sold the most?
+
+""" product_group = all_data.groupby('Product')
+
+quantity_order = product_group.sum()['Quantity Ordered']
+
+products = [product for product, df in all_data.groupby('Product')]
+
+prices = all_data.groupby('Product').mean()['Price Each']
+
+fig, ax1 = plt.subplots()
+
+ax2 = ax1.twinx()
+
+ax1.bar(products, quantity_order, color='green')
+ax2.plot(products, prices, 'b-')
+
+plt.bar(products, quantity_order)
+
+ax1.set_xlabel('Product name')
+
+ax1.set_ylabel('Quantity Ordered', color='g')
+
+ax2.set_ylabel('Price $', color='b')
+
+ax1.set_xticklabels(products, rotation='vertical', size=6)
+
+plt.show() """
+
+
