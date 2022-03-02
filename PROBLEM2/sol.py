@@ -9,7 +9,7 @@ if __name__=="__main__":
                 'gross', 'movie_title', 'num_user_for_reviews',	'country',
                 'cotent_rating', 'budget', 'title_year', 'imdb_score', 'genre']
 
-    df = pd.read_csv("movies.csv", delimiter="|", header=None, na_values=['?'], names=column_names)
+    df = pd.read_csv("movies.csv", delimiter="|", header=None, na_values=['?'], names=column_names, thousands=',')
     df = df.dropna()
 
     #Show in a bar chart the 5 longer movies
@@ -64,7 +64,10 @@ if __name__=="__main__":
 
     higher = action_groups.loc[action_groups['num_critic_for_reviews'].idxmax]
 
+    print(higher)
+
     print(f'Movie: {higher["movie_title"]}, score: {higher["num_critic_for_reviews"]}')
+
 
 
     
